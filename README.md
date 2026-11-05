@@ -34,14 +34,18 @@ Neither route adapts to a BigCommerce change by itself. Someone has to ship the 
 ### GTM (A or B)
 
 1. Create a **Custom HTML** tag, paste the file, trigger **All Pages** (or Initialization - All Pages).
-2. Recommended: in Script Manager, add `gtm-order-id-helper.script-manager.html`. Location: **Footer**. Pages: **Order confirmation**. Category: **Essential**. Type: **Script**.
+2. Recommended: in Script Manager, add `gtm-order-id-helper.script-manager.html`. Placement: **Footer**. Location: **Order confirmation**. Category: **Essential**. Script type: **Script**.
 3. Check that the GTM container loads on checkout and order confirmation. It must be installed through Script Manager with **All pages** selected, or in the theme for those pages too.
 
 ### Script Manager (C or D)
 
-Create a script. Location: **Footer**. Pages: **All pages**. Type: **Script**. Paste the file.
+Create a script. Placement: **Footer**. Location: **All pages**. Script type: **Script**. Paste the file.
 
 "All pages" is the option that includes checkout and order confirmation. "Storefront pages" does not. If the store uses the cookie consent banner, the category you choose decides when the script may load.
+
+A new script can take a few minutes to appear on the storefront. It took about five in testing, so wait before deciding it failed.
+
+**Checkout security:** BigCommerce asks for an integrity hash on URL-type scripts that run on checkout (PCI DSS 6.4.3). The hosted options load the file from a small inline script, so no hash is enforced, and a future 1.x update can change what runs on your checkout. If the store has PCI requirements, use a paste option or pin an exact version such as `@1.0.0`, and include the script in your PCI script inventory.
 
 ### Send the events to your tags
 
@@ -156,11 +160,12 @@ Returns version, config, BODL state, order ID, cart copy, errors and the last 10
 ## Tested
 
 - 26 jsdom tests: `npm test`.
-- Live on one store (November 2026, Stencil, tax-exclusive, USD, guest shopper), by running the script in the page against a separate dataLayer: every event above except `user_info` and `bc_ecom_error`, AJAX and link-based add to cart, quantity up and down, trash removal, a $0 order, reload protection and `purchase_test`.
+- Live on one store (November 2026, Stencil, tax-exclusive, USD, guest shopper): every event above except `user_info` and `bc_ecom_error`, AJAX and link-based add to cart, quantity up and down, trash removal, $0 orders, reload protection and `purchase_test`.
+- Real installs of the hosted route on that store: a GTM tag in Preview, where `user_data.email` reached the Google Ads tags with no helper line, and a temporary Script Manager script, where `{{checkout.order.id}}` supplied the order number and stayed empty on other pages.
 
 ## Not yet verified on a live store
 
-- A paid order, or a real GTM Preview or Script Manager install of these exact files
+- A paid order, the paste options, or `user_data` delivery confirmed in Google Ads reporting
 - Logged-in customers, variants with options, sale-priced products, digital items, bundles, gift certificates
 - Tax-inclusive stores: non-purchase values include tax there because the Cart API prices do, and `purchase` net value relies on `taxTotal`
 - Multi-currency stores, order-level discounts other than coupons
