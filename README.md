@@ -14,6 +14,10 @@ Copying BODL straight into the dataLayer gives wrong numbers. Logged on a live s
 - BODL's payment step can fire more than once per order, and before a payment method is chosen.
 - `bodl_v1_order_purchased` did not fire on a tested $0 order, so `purchase` can't rely on it.
 
+## Before you install
+
+In BigCommerce, go to **Settings > Data solutions > Show advanced settings** and tick **Turn on the data layer**. This enables BODL. With it off, the tracker pushes `bc_ecom_error` (`bodl_missing`) and no browsing or checkout events come through.
+
 ## Choose an install
 
 Every option pushes the same events. Install **one**. A second copy on the same page does nothing.
@@ -54,6 +58,7 @@ A new script can take a few minutes to appear on the storefront. It took about f
 2. **GA4 Event** tag: event name `{{Event}}`, More Settings > Ecommerce > **Send Ecommerce data**, source Data Layer.
 3. Google Ads conversion tag: read `ecommerce.value`, `ecommerce.transaction_id`, `ecommerce.currency`.
 4. Remove every older ecommerce script, or events will double count. Check Script Manager, Data Solutions (Affiliate Conversion Tracking) and the theme.
+5. If events still fire twice after removing a script, look for it in the page source. A deleted Script Manager script was seen still being served on category, brand and product pages after it had gone from home, cart and web pages, so allow for cache and purge the store cache if needed.
 
 ## Events
 
