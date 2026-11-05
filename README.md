@@ -20,6 +20,10 @@ In BigCommerce, go to **Settings > Data solutions > Show advanced settings** and
 
 ## Choose an install
 
+Fastest: import [`dist/bigcommerce-gtm-ecommerce-container.json`](dist/bigcommerce-gtm-ecommerce-container.json) in GTM (Admin > Import Container, Merge, Rename conflicting). It adds the option A tag, triggers, GA4 tags, `user_data` variables and a paused Google Ads tag. Don't use Overwrite. Set the measurement ID, conversion ID and label variables and unpause the Ads tag. GTM's import screen accepted this file (26 added, 0 modified, 0 deleted), but it hasn't yet been imported and run on a live store, so check it in Preview.
+
+Or install by hand:
+
 Every option pushes the same events. Install **one**. A second copy on the same page does nothing.
 
 | | File in `dist/` | Where | Updates |
@@ -164,17 +168,23 @@ Returns version, config, BODL state, order ID, cart copy, errors and the last 10
 
 ## Tested
 
-- 26 jsdom tests: `npm test`.
-- Live on one store (November 2026, Stencil, tax-exclusive, USD, guest shopper): every event above except `user_info` and `bc_ecom_error`, AJAX and link-based add to cart, quantity up and down, trash removal, $0 orders, reload protection and `purchase_test`.
+- 27 tests: `npm test`.
+- Live on one store (November 2026, Stencil, tax-exclusive, USD, guest shopper): every event above except `user_info` and `bc_ecom_error`, AJAX and link-based add to cart, quantity up and down, trash removal, $0 orders, reload protection and `purchase_test`, then a real paid order after publishing.
 - Real installs of the hosted route on that store: a GTM tag in Preview, where `user_data.email` reached the Google Ads tags with no helper line, and a temporary Script Manager script, where `{{checkout.order.id}}` supplied the order number and stayed empty on other pages.
 
 ## Not yet verified on a live store
 
-- A paid order, the paste options, or `user_data` delivery confirmed in Google Ads reporting
+- `user_data` delivery confirmed in Google Ads reporting, or a completed import of the GTM container file
 - Logged-in customers, variants with options, sale-priced products, digital items, bundles, gift certificates
 - Tax-inclusive stores: non-purchase values include tax there because the Cart API prices do, and `purchase` net value relies on `taxTotal`
 - Multi-currency stores, order-level discounts other than coupons
 - Other themes: `select_item` relies on product card markup and may not fire
+
+## Alternatives
+
+- BigCommerce's native GA4 connection (Data Solutions): built in, not routed through your GTM setup, no custom parameters.
+- [fueled-io/bigcommerce-datalayer](https://github.com/fueled-io/bigcommerce-datalayer): open source and GA4 format, Script Manager only, GPL-3, last commit June 2022.
+- Paid agencies, and guides that cover only `purchase`.
 
 ## Known limitations
 

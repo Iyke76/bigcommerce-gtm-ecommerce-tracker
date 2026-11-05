@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Added `dist/bigcommerce-gtm-ecommerce-container.json`, a GTM import file. The tracker code is unchanged.
+
 ## 1.0.0 (2026-11-05)
 
 First public release.

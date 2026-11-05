@@ -325,6 +325,20 @@ test('logged-in user_info has no customer details', async () => {
   assert.strictEqual(JSON.stringify(e).includes('a@b.com'), false);
 });
 
+test('GTM import file is clean and wired up', () => {
+  const fs = require('fs'), path = require('path');
+  const raw = fs.readFileSync(path.join(__dirname, '../dist/bigcommerce-gtm-ecommerce-container.json'), 'utf8');
+  const c = JSON.parse(raw).containerVersion;
+  assert.strictEqual(/GTM-5FB3|posrg|LOVETEST|IYKETEST|AW-\d/i.test(raw), false);
+  const vars = new Set(c.variable.map((v) => v.name).concat(['Event', '_event']));
+  (raw.match(/\{\{[^{}"\\]+\}\}/g) || []).forEach((m) => assert.ok(vars.has(m.slice(2, -2)), 'unknown variable ' + m));
+  const trig = new Set(c.trigger.map((t) => t.triggerId).concat(['2147479553']));
+  c.tag.forEach((t) => t.firingTriggerId.forEach((id) => assert.ok(trig.has(id))));
+  assert.strictEqual(c.tag.find((t) => t.type === 'awct').paused, true);
+  const ids = c.tag.map((t) => t.tagId).concat(c.trigger.map((t) => t.triggerId), c.variable.map((v) => v.variableId));
+  assert.strictEqual(new Set(ids).size, ids.length);
+});
+
 (async () => {
   let failed = 0;
   for (const [name, fn] of tests) {
