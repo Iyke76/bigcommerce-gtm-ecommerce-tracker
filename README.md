@@ -58,7 +58,7 @@ A new script can take a few minutes to appear on the storefront. It took about f
 2. **GA4 Event** tag: event name `{{Event}}`, More Settings > Ecommerce > **Send Ecommerce data**, source Data Layer.
 3. Google Ads conversion tag: read `ecommerce.value`, `ecommerce.transaction_id`, `ecommerce.currency`.
 4. Remove every older ecommerce script, or events will double count. Check Script Manager, Data Solutions (Affiliate Conversion Tracking) and the theme.
-5. If events still fire twice after removing a script, look for it in the page source. A deleted Script Manager script was seen still being served on category, brand and product pages after it had gone from home, cart and web pages, so allow for cache and purge the store cache if needed.
+5. If events still fire twice after removing a script, look for it in the page source. A deleted Script Manager script was seen still being served on category, brand and product pages after it had gone from home, cart and web pages, and it cleared soon after other scripts were created and deleted. No purge option was found under Settings.
 
 ## Events
 
