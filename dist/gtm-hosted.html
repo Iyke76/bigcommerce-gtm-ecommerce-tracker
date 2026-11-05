@@ -1,0 +1,14 @@
+<script>
+window.BC_ECOM_CONFIG = {
+  debug: false,          // true = log every push to the console
+  userData: 'plain',     // 'plain' | 'hashed' | 'off': customer data on purchase, for Enhanced Conversions
+  purchaseValue: 'net',  // 'net' = Google's spec, no tax or shipping | 'total' = full order total
+  testCoupons: []        // e.g. ['MYTEST']: orders with these coupons push purchase_test instead
+};
+(function () {
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/gh/Iyke76/bigcommerce-gtm-ecommerce-tracker@1/dist/bigcommerce-ecommerce-tracker.min.js';
+  s.async = true;
+  document.head.appendChild(s);
+})();
+</script>

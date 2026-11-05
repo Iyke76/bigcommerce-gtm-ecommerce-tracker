@@ -1,0 +1,14 @@
+{
+  "name": "bigcommerce-gtm-ecommerce-tracker",
+  "version": "1.0.0",
+  "description": "GA4 ecommerce dataLayer events and Enhanced Conversions data for BigCommerce Stencil stores. Install through GTM or Script Manager.",
+  "license": "MIT",
+  "author": "Iyke Abel",
+  "private": true,
+  "scripts": {
+    "build": "node build/build.js",
+    "test": "node build/build.js && node test/tracker.test.js"
+  },
+  "devDependencies": { "acorn": "^8.11.0", "jsdom": "^24.0.0", "terser": "^5.27.0" },
+  "keywords": ["bigcommerce", "google-tag-manager", "gtm", "ga4", "enhanced-conversions", "datalayer", "bodl", "ecommerce-tracking"]
+}
